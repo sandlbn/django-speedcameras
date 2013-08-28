@@ -3,14 +3,14 @@
 import os
 import sys
 
-import django-speedcameras
+import django_speedcameras
 
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-version = django-speedcameras.__version__
+version = django_speedcameras.__version__
 
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
@@ -23,7 +23,7 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
-    name='django-speedcameras',
+    name='django_speedcameras',
     version=version,
     description='Map of speed camera locations',
     long_description=readme + '\n\n' + history,
@@ -31,14 +31,14 @@ setup(
     author_email='marcin@spoczynski.com',
     url='https://github.com/sandlbn/django-speedcameras',
     packages=[
-        'django-speedcameras',
+        'django_speedcameras',
     ],
     include_package_data=True,
     install_requires=[
     ],
     license="BSD",
     zip_safe=False,
-    keywords='django-speedcameras',
+    keywords='django_speedcameras',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Framework :: Django',
