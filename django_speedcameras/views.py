@@ -10,21 +10,9 @@ class GoogleSpeedCamera(TemplateView):
 
     def get_context_data(self, **kwargs):
 
-        context = super(GoogleSpeedCamera,self).get_context_data(**kwargs)
+        context = super(GoogleSpeedCamera, self).get_context_data(**kwargs)
 
         queryset = SpeedCamera.objects.filter(active=True)
-        gpolygons = []
-
-        for camera in queryset:
-            gpolygon = GPolygon(camera.poly)
-            gpolygons.append(gpolygon)
-
-        google_maps = GoogleMap(
-            center = (0,0),
-            zoom = 5,
-            key=settings.GOOGLE_MAPS_API_PASSWORD,
-            polygons = gpolygons
-        )
-        context["google"] = google_maps
+        context["cameras"] = queryset
 
         return context

@@ -3,4 +3,4 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
-recursive-include django-speedcameras *.html *.png *.gif *js *jpg *jpeg *svg *py
+recursive-include django_speedcameras *.html *.png *.gif *js *jpg *jpeg *svg *py *html *js
