@@ -1,8 +1,7 @@
-from django.contrib.gis.maps.google.gmap import GoogleMap
-from django.contrib.gis.maps.google.overlays import GMarker, GPolygon
 from django.views.generic import TemplateView
 from django.conf import settings
 from models import SpeedCamera
+
 
 class GoogleSpeedCamera(TemplateView):
 

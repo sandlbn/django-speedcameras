@@ -2,25 +2,53 @@
 <!DOCTYPE html>
 <html>
   <head>
+  <title> Lokalizacje miejsc do pomiaru prędkości za pomocą mobilnego urządzenia rejestrującego.</title>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
   <style type="text/css">
-html { height: 100% }
-body { height: 100%; margin: 0; padding: 0 }
-#description { height: 100px; width: 200px; position: absolute; top: 20px; left: 20px; background-color: #fff; color: #000;z-index: 999; }
-#map-canvas { height: 100%;z-index: 1; }
+  html,body {width:100%;height:100%;margin:0;padding:0;}
+
+#map-canvas {
+    display: block;
+    position:absolute;
+    height:auto;
+    bottom:0;
+    top:0;
+    left:0;
+    right:0;
+    margin-top:60px;
+}
+
   </style>
   {% autoescape off %}
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXbIz9sLQZBK8pAoWYocwyruw1QXXLqoE&sensor=true"></script>
   <script type="text/javascript">
+  function smoothZoom (map, max, cnt) {
+    if (cnt >= max) {
+            return;
+        }
+    else {
+        z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+            google.maps.event.removeListener(z);
+            self.smoothZoom(map, max, cnt + 1);
+        });
+        setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
+    }
+}  
+
   function initialize() {
+  
   var mapOptions = {
-  center: new google.maps.LatLng(51.248465,22.570735),
+  center: new google.maps.LatLng(51.236469,22.56103),
   zoom: 13,
   mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("map-canvas"),
                                               mapOptions)
+
   var image = '{% static 'img/unnamed.png' %}';
+  var bounds = new google.maps.LatLngBounds();
   {% for camera in cameras %}
   	var cords = []
   	var marker_{{camera.id}} = new google.maps.Marker({ 
@@ -35,6 +63,12 @@ body { height: 100%; margin: 0; padding: 0 }
   google.maps.event.addListener(marker_{{camera.id}}, 'click', function() {
     infowindow_{{ camera.id }}.open(marker_{{camera.id}}.get('map'), marker_{{camera.id}});
   });
+  google.maps.event.addListener(marker_{{camera.id}}, 'dblclick', function(event){
+    map = marker_{{camera.id}}.getMap();
+
+    map.setCenter(this.getPosition()); // set map center to marker position
+    smoothZoom(map, 16, map.getZoom()); // call smoothZoom, parameters map, final zoomLevel, and starting zoom level
+})
   {% for point in camera.polygonpoint_set.all %}
   cords.push(new google.maps.LatLng({{point.lat}}, {{point.lng}}));
   {% endfor %}
@@ -50,13 +84,22 @@ body { height: 100%; margin: 0; padding: 0 }
     polygon.setMap(map);
 
     {% endfor %}
+
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 {% endautoescape %}
 </head>
 <body>
-<div id="map-canvas"/>
-<div id="description"> Mapa Fotoradary</div>
-    </body>
+
+    <div class="well alert-info navbar-fixed-top">
+
+          <strong><a href="/">Straż Miejska Miasta Lublin</strong></a> Lokalizacje miejsc do pomiaru prędkości za pomocą mobilnego urządzenia rejestrującego.
+    </div>
+    <div id="map-canvas"/>
+</body>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
     </html>
+Lokalizacje miejsc do pomiaru prędkości za pomocą mobilnego urządzenia rejestrującego.
