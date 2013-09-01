@@ -12,7 +12,7 @@ import os
 import shutil
 import unittest
 
-from django-speedcameras import models
+from django_speedcameras import models
 
 
 class TestDjango-speedcameras(unittest.TestCase):
@@ -20,7 +20,7 @@ class TestDjango-speedcameras(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_something(self):
+    def test_adding(self):
         pass
 
     def tearDown(self):

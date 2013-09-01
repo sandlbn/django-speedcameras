@@ -1,17 +1,16 @@
-from django.views.generic import TemplateView
+from django.views.generic import ListView
 from django.conf import settings
 from models import SpeedCamera
 
 
-class GoogleSpeedCamera(TemplateView):
+class GoogleSpeedCamera(ListView):
 
     template_name = 'django_speedcameras/google_maps.html'
+    context_object_name = 'cameras'
+    queryset = SpeedCamera
 
-    def get_context_data(self, **kwargs):
+    def get_queryset(self):
 
-        context = super(GoogleSpeedCamera, self).get_context_data(**kwargs)
+        queryset = self.queryset.objects.filter(active=True)
 
-        queryset = SpeedCamera.objects.filter(active=True)
-        context["cameras"] = queryset
-
-        return context
+        return queryset
